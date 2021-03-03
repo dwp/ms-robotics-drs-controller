@@ -1,0 +1,41 @@
+server:
+  applicationConnectors:
+  - type: ${PROTOCOL:-http}
+    port: ${APP_PORT:-9501}
+  adminConnectors:
+  - type: ${PROTOCOL:-http}
+    port: ${ADMIN_PORT:-0}
+  requestLog:
+    type: external
+
+sqsConfiguration:
+  pathStyleAccessEnabled: ${SQS_PATH_STYLE_ACCESS:-true}
+  region: ${AWS_DEFAULT_REGION:-US_EAST_1}
+
+snsConfiguration:
+  pathStyleAccessEnabled: ${SNS_PATH_STYLE_ACCESS:-true}
+  region: ${AWS_DEFAULT_REGION:-US_EAST_1}
+
+kmsQueueCryptoConfiguration:
+  dataKeyRequestId: ${DATA_KEY_REQUEST_ID:-null}
+
+sqsQueueName: ${SQS_QUEUE_NAME}
+
+snsTopicName: ${SNS_TOPIC_NAME}
+snsRoutingKey: ${SNS_ROUTING_KEY:-sns.verified.submission}
+snsSubject: ${SNS_SUBJECT:-verified-esa-claim}
+snsEncryptMessages: ${SNS_ENCRYPT_MESSAGES:-true}
+
+caseServiceApplicationEndpoint: ${CASE_APPLICATION_ENDPOINT:-null}
+caseServiceQueryEndpoint: ${CASE_QUERY_ENDPOINT:-null}
+caseServiceParameter: ${CASE_PARAM:-caseId}
+
+caseServiceTruststoreFile: null
+caseServiceTruststorePass: null
+caseServiceKeystoreFile: null
+caseServiceKeystorePass: null
+
+applicationInfoEnabled: ${ENABLE_APP_INFO_ENDPOINT:-false}
+
+logging:
+  type: external

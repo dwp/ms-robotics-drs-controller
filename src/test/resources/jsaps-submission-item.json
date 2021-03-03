@@ -1,0 +1,154 @@
+{
+  "submitted_date": "25/01/2019",
+  "claim_ref": "string",
+  "nino": "AA370773",
+  "first_name": "Robert",
+  "surname": "Johnson",
+  "date_of_birth": "25/01/2019",
+  "contact_number": "0113 25678978",
+  "claimant_address": {
+    "address_line_1": "25 Town Street",
+    "address_line_2": "Meanwood",
+    "town": "Leeds",
+    "county": "West Yorkshire",
+    "postcode": "LS10 4PT"
+  },
+  "use_claimant_address": "Y",
+  "correspondence_address": {
+    "address_line_1": "25 Town Street",
+    "address_line_2": "Meanwood",
+    "town": "Leeds",
+    "county": "West Yorkshire",
+    "postcode": "LS10 4PT"
+  },
+  "claim_start_date": "25/11/2018",
+  "ssp_received": "Y",
+  "ssp_end_date": "16/04/2019",
+  "receiving_statutory_extra": "Statutory Maternity Pay",
+  "expected_fit_for_work_date": "20/04/2019",
+  "voluntary_work_activity": "Y",
+  "voluntary_work_assignments": [
+    {
+      "organisation": {
+        "org_name": "Department for Work and Pensions",
+        "role": "Software Engineer",
+        "address": {
+          "address_line_1": "25 Town Street",
+          "address_line_2": "Meanwood",
+          "town": "Leeds",
+          "county": "West Yorkshire",
+          "postcode": "LS10 4PT"
+        },
+        "phone_number": "0113 25678978"
+      },
+      "same_hours_every_week": "Y",
+      "weekly_hours": 12,
+      "paid_expenses": "Y"
+    }
+  ],
+  "employed_work": "Y",
+  "employed_work_details": [
+    {
+      "employment_status": "Employee",
+      "organisation": {
+        "org_name": "Department for Work and Pensions",
+        "role": "Software Engineer",
+        "address": {
+          "address_line_1": "25 Town Street",
+          "address_line_2": "Meanwood",
+          "town": "Leeds",
+          "county": "West Yorkshire",
+          "postcode": "LS10 4PT"
+        },
+        "phone_number": "0113 25678978"
+      },
+      "same_hours_every_week": "Y",
+      "weekly_hours": 12,
+      "currently_off_sick": "Y",
+      "last_working_day": "20/07/2018",
+      "payment_amount": 50,
+      "payment_schedule": 4,
+      "paid_expenses": "Y",
+      "support_worker_indicator": 3
+    }
+  ],
+  "receiving_pension": "Y",
+  "pension_details": [
+    {
+      "pension": {
+        "reference": "123ref321",
+        "provider": "Legal and General",
+        "address": {
+          "address_line_1": "25 Town Street",
+          "address_line_2": "Meanwood",
+          "town": "Leeds",
+          "county": "West Yorkshire",
+          "postcode": "LS10 4PT"
+        },
+        "phone_number": "0113 25678978",
+        "first_payment_date": "20/04/2019",
+        "amount_gross": 55,
+        "amount_net": 45,
+        "payment_schedule": 4
+      },
+      "inherited": "Y"
+    }
+  ],
+  "receiving_permanent_health_insurance": "Y",
+  "health_insurance_details": [
+    {
+      "insurer": {
+        "reference": "123ref321",
+        "provider": "Legal and General",
+        "address": {
+          "address_line_1": "25 Town Street",
+          "address_line_2": "Meanwood",
+          "town": "Leeds",
+          "county": "West Yorkshire",
+          "postcode": "LS10 4PT"
+        },
+        "phone_number": "0113 25678978",
+        "first_payment_date": "20/04/2019",
+        "amount_gross": 55,
+        "amount_net": 45,
+        "payment_schedule": 4
+      },
+      "self_funded_premium_exceeds_50": "Y"
+    }
+  ],
+  "currently_in_hospital": "Y",
+  "admission_date": "03/06/2019",
+  "pregnant": "Y",
+  "baby_due_date": "03/06/2019",
+  "special_rule_application": "Y",
+  "ds1500_already_submitted": "Y",
+  "coronavirus": "Y",
+  "coronavirus_date": "02/02/20",
+  "other_health_condition": "Y",
+  "medical_conditions": [
+    {
+      "condition": "asthma",
+      "condition_start_date": "01/10/1986"
+    }
+  ],
+  "gp_surgery_details": {
+    "doctor_title": "Dr",
+    "doctor_forename": "S",
+    "doctor_surname": "Freud",
+    "surgery_name": "The Doctors Surgery",
+    "surgery_address": {
+      "address_line_1": "25 Town Street",
+      "address_line_2": "Meanwood",
+      "town": "Leeds",
+      "county": "West Yorkshire",
+      "postcode": "LS10 4PT"
+    },
+    "phone_number": "0113 25678978"
+  },
+  "banking_details": {
+    "name": "Barclays",
+    "account_holder_name": "Robert Johnson",
+    "sort_code": "01-01-01",
+    "account_number": 11111111
+  }
+}

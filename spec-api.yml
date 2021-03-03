@@ -1,0 +1,629 @@
+openapi: 3.0.0
+info:
+  description: >-
+    IAG (intelligent-automation-garage) query endpoint to get available
+    "new-style" ESA claims for processing.  These claims will be have been
+    received into the department digitally and marked as 'available following claimant id checks.
+    This is version 9.0.0
+  version: 9.0.0
+  title: IAG interface for new-style ESA
+servers:
+  - url: 'https://micro-service-to-be-agreed/iagQueryEsaSubmissionByClaimRef'
+paths:
+  /iagQueryEsaSubmissionByClaimRef:
+    post:
+      tags:
+        - IAG query API
+      summary: (capture esa claim information)
+      requestBody:
+        description: >-
+          Receives 'ClaimRef' as the identifier and will return the ESA
+          submission data to the caller if the record exists and has been marked
+          as 'available' for robotics (This will be set following the claimant
+          id checks)
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuerySubmission'
+      responses:
+        '200':
+          description: this is a successful response which passes the translated submission information for JSAPS robotics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmissionDetails'
+        '204':
+          description: this is a successful connection to the API but the request cannot be completed - this will be because the json ClaimRef does not exist or is not available for robotics
+        '400':
+          description: this is an unsuccessful response and may show 'Payload contains invalid items' as the body (if one of the input items is invalid or badly formed)
+        '404':
+          description: This will return if the endpoint cannot be found or is being called with the incorrect HTTP method. Will usually return "HTTP 404 Not found"
+        '500':
+          description: This is usually caused by an internal server error and may return 'Unable to process request'
+components:
+  schemas:
+    QuerySubmission:
+      type: object
+      required:
+        - claim_ref
+      properties:
+        claim_ref:
+          description: >-
+            the 'ClaimRef' value decoded from the DRS Metadata header
+            information
+          type: string
+          nullable: false
+    SubmissionDetails:
+      type: object
+      required:
+        - submitted_date
+        - claim_ref
+        - nino
+        - first_name
+        - surname
+        - date_of_birth
+        - contact_number
+        - claimant_address
+        - use_claimant_address
+        - language_completed
+        - welsh_postcode
+        - written_comms
+        - verbal_comms
+        - claim_start_date
+        - ssp_received
+        - receiving_statutory_extra
+        - voluntary_work_activity
+        - employed_work
+        - receiving_pension
+        - receiving_permanent_health_insurance
+        - currently_in_hospital
+        - pregnant
+        - special_rule_application
+        - coronavirus
+        - gp_surgery_details
+        - banking_details
+      properties:
+        submitted_date:
+          description: the claim submission date; will always contain a value
+          type: string
+          nullable: false
+          format: date
+          example: 25/01/19
+          pattern: DD/MM/YY
+        claim_ref:
+          description: The original 'ClaimRef' passed in to the api; will always contain a value
+          type: string
+          nullable: false
+        nino:
+          description: national insurance number (NINO in JSAPS); will always contain a value
+          type: string
+          nullable: false
+          pattern: >-
+            (^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)[A-Z&&[^DFIQUV]][A-Z&&[^DFIOQUV]][0-9]{6}[ABCD
+            ]?$)
+          example: AA370773A
+        first_name:
+          description: The claimant's first name; will always contain a value
+          example: Robert
+          type: string
+          nullable: false
+        surname:
+          description: The claimant's surname; will always contain a value
+          example: Johnson
+          type: string
+          nullable: false
+        date_of_birth:
+          description: the claimant's date of birth; will always contain a value
+          type: string
+          nullable: false
+          format: date
+          example: 25/01/81
+          pattern: DD/MM/YY
+        contact_number:
+          description: the claimant's mobile phone or landline number (Home Number is JSAPS); null value = ""
+          example: 011325678978
+          type: string
+          nullable: true
+        claimant_address:
+          description: claimant address; This will call into the Object - "PostalAddress"
+          $ref: '#/components/schemas/PostalAddress'
+          nullable: false
+        use_claimant_address:
+          description: use the claimant address for all letters from DWP? (Y/N); will always contain a value
+          $ref: '#/components/schemas/YesNo'
+          nullable: false
+        correspondence_address:
+          description: address to use for letters if not sending to claimant address; this will call into the Object - "PostalAddress"
+          $ref: '#/components/schemas/PostalAddress'
+          nullable: true
+        language_completed:
+          description: whether the form completed in english or welsh, en or cy accordingly.
+          type: string
+          nullable: false
+        welsh_postcode:
+          description: whether the claimant residential address postcode belongs to welsh or not? (Y/N) must be Y or N
+          $ref: '#/components/schemas/YesNo'
+          nullable: false
+        written_comms:
+          description: preferred language for written communication. English or Welsh. Blank if welsh_postcode is N.
+          type: string
+          nullable: true
+        verbal_comms:
+          description: preferred language for verbal communication. English or Welsh. Blank if welsh_postcode is N.
+          type: string
+          nullable: true
+        claim_start_date:
+          description: intended claim start date; this will always contain a value
+          type: string
+          nullable: false
+          format: date
+          example: 25/01/20
+          pattern: DD/MM/YY
+        ssp_received:
+          description: received ssp in the last 12 weeks? (Y/N); must be either Y/N; Is a composite response as SSP is handled as 2 questions on UI - first "ARE you getting..." and if "N" then "WERE you getting...". Will display as "Y" if EITHER of the SSP questions is marked as "Y" and only display as "N" if both questions were answered "N"
+          $ref: '#/components/schemas/YesNo'
+          nullable: false
+        ssp_end_date:
+          description: Only displays if answer to either are/were getting SSP is "Y" and will display the appropriate corresponding date. If both SSP questions are "N" this will be null value = ""
+          type: string
+          nullable: true
+          format: date
+          example: 16/04/20
+          pattern: DD/MM/YY
+        receiving_statutory_extra:
+          description: receiving other statutory payments (from list); null value = ""
+          $ref: '#/components/schemas/StatutoryExtraPayments'
+          nullable: true
+        expected_fit_for_work_date:
+          description: expected date to be fit for work again?; null value = ""
+          type: string
+          nullable: true
+          format: date
+          example: 20/04/19
+          pattern: DD/MM/YY
+        voluntary_work_activity:
+          description: are you doing any voluntary work? (Y/N); must be either Y or N
+          $ref: '#/components/schemas/YesNo'
+          nullable: false
+        voluntary_work_assignments:
+          description: list of voluntary work assignments; null value = []
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/VoluntaryWork'
+        employed_work:
+          description: are you currently employed? (Y/N); must be either Y or N
+          $ref: '#/components/schemas/YesNo'
+          nullable: false
+        employed_work_details:
+          description: the employment details for the claimant. May contain more than 1 set of data; null value = []
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/EmployedWork'
+        receiving_pension:
+          description: are you getting money from a pension or annuity? (Y/N); must be either Y or N
+          $ref: '#/components/schemas/YesNo'
+          nullable: false
+        pension_details:
+          description: details of the pension. currently will always be empty.; null value = []
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/PensionProvider'
+        receiving_permanent_health_insurance:
+          description: are you getting any money from a permanent health insurance policy? (Y/N) Occ Pensions in JSAPS; must be Y or N
+          $ref: '#/components/schemas/YesNo'
+          nullable: false
+        health_insurance_details:
+          description: details of the health insurance. currently will always be empty.   null value = []
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/HealthProvider'
+        currently_in_hospital:
+          description: are you currently staying in hospital? (Y/N); must be Y or N
+          $ref: '#/components/schemas/YesNo'
+          nullable: false
+        admission_date:
+          description: if 'currently in hospital', when was your admission date?; null value = ""
+          type: string
+          format: date
+          nullable: true
+          example: 03/06/19
+          pattern: DD/MM/YY
+        pregnant:
+          description: are you expected a baby? (Y/N); must be Y or N
+          $ref: '#/components/schemas/YesNo'
+          nullable: false
+        baby_due_date:
+          description: date baby is due; null value = ""
+          type: string
+          format: date
+          nullable: true
+          example: 03/06/20
+          pattern: DD/MM/YY
+        special_rule_application:
+          description: do special rules apply? (Y/N); must be Y or N
+          $ref: '#/components/schemas/YesNo'
+          nullable: false
+        ds1500_already_submitted:
+          description: has you doctor or specialist sent a DS1500 report? (Y/N) must be Y or N but may be null if Special_rule_application is N; null value = "N"
+          $ref: '#/components/schemas/YesNo'
+          nullable: true
+        coronavirus:
+          description: is coronavirus (COVID-19) the main reason for your claim? (Y/N) must be Y or N
+          $ref: '#/components/schemas/YesNo'
+          nullable: false
+        coronavirus_date:
+          description: what date were you first affected by coronavirus?; if coronavirus = N then will be null value = ""
+          type: string
+          nullable: true
+          format: date
+          example: 01/10/20
+          pattern: DD/MM/YY
+        other_health_condition:
+          description: do you have any other health conditions, illnesses, disabilities or injuries? (Y/N) Must be Y or N but ONLY if coronavirus = Y; null value = "N"
+          $ref: '#/components/schemas/YesNo'
+          nullable: true
+        medical_conditions:
+          description: the details of medical conditions (or other medical conditions if coronavirus is Y) May be omitted where coronavirus is Y and other_health_condiitons is N; null value = []
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/MedicalConditions'
+        gp_surgery_details:
+          description: doctor's surgery details;
+          $ref: '#/components/schemas/MedicalDetails'
+          nullable: false
+        banking_details:
+          description: bank or building society details;
+          $ref: '#/components/schemas/BankingDetails'
+          nullable: false
+    BankingDetails:
+      type: object
+      required:
+        - name
+        - account_holder_name
+        - sort_code
+        - account_number
+      properties:
+        name:
+          description: bank or building society name; must contain a value
+          example: Barclays
+          type: string
+          nullable: false
+        account_holder_name:
+          description: name of the account holder; must contain a value
+          example: Robert Johnson
+          type: string
+          nullable: false
+        sort_code:
+          description: the account sort code; must contain a value
+          example: 01-01-01
+          pattern: 00-00-00
+          type: string
+          nullable: false
+        account_number:
+          description: the account number; must contain a value
+          example: 11111111
+          type: string
+          nullable: false
+    MedicalConditions:
+      description: the medical conditions details. may be repeated if claimant has multiple conditions.; Only present where medical_conditions is NOT empty
+      type: object
+      required:
+        - condition
+        - condition_start_date
+      properties:
+        condition:
+          description: what is the name of the conditions or illnesses you have? Type in JSAPS; null value = ""
+          example: asthma
+          type: string
+          nullable: false
+        condition_start_date:
+          description: when did your illness start, From Date in JSAPS; null value = ""
+          type: string
+          nullable: false
+          format: date
+          example: 01/10/19
+          pattern: DD/MM/YY
+    MedicalDetails:
+      description: details of doctor and surgery address; Object  no value; Note - we have removed the doctor_title, doctor_forename and doctor_surname from the required list as they are not mandatory fields on UI. However, API will present blank fields (showing as "") in the JSON if they are not completed by the claimant
+      type: object
+      required:
+        - surgery_name
+        - surgery_address
+        - phone_number
+      properties:
+        doctor_title:
+          description: the doctor's title; null value = ""
+          example: Dr
+          type: string
+          nullable: true
+        doctor_forename:
+          description: the doctor's forename (or initial)  this will contain all Doctors details. If then null value = ""
+          example: S
+          type: string
+          nullable: true
+        doctor_surname:
+          description: the doctor's surname; will usually be present the null value = ""
+          example: Freud
+          type: string
+          nullable: true
+        surgery_name:
+          description: surgery or medical centre details; will always contain a value
+          example: The Doctors Surgery
+          type: string
+          nullable: false
+        surgery_address:
+          description: surgery address - calls PostalAddress component object
+          $ref: '#/components/schemas/PostalAddress'
+          nullable: false
+        phone_number:
+          description: contact phone number; null value = ""
+          example: 011325678978
+          type: string
+          nullable: true
+    HealthProvider:
+      type: object
+      required:
+        - insurer
+        - self_funded_premium_exceeds_50
+      properties:
+        insurer:
+          description: the health policy and provider details; Object - no value
+          $ref: '#/components/schemas/HealthPensionProvider'
+        self_funded_premium_exceeds_50:
+          description: did you pay more than half of the premiums for this policy? (Y/N). Must be Y or N
+          $ref: '#/components/schemas/YesNo'
+    PensionProvider:
+      description: details of the pension provider. only present when pension_details is NOT empty. Object - no value
+      type: object
+      required:
+        - pension
+        - inherited
+      properties:
+        pension:
+          description: the pension policy and provider details; null value = ""
+          $ref: '#/components/schemas/HealthPensionProvider'
+          nullable: true
+        inherited:
+          description: whether the pension is inherited or not. must be Y or N
+          $ref: '#/components/schemas/YesNo'
+          nullable: true
+    HealthPensionProvider:
+      description: details of the health insurance provider - only present when health_pension_details is NOT empty. Object - no value
+      type: object
+      required:
+        - reference
+        - provider
+        - address
+        - phone_number
+        - first_payment_date
+        - amount_gross
+        - amount_net
+        - payment_schedule
+      properties:
+        reference:
+          description: pension reference number, Ref in JSAPS; null value = ""
+          example: 123ref321
+          type: string
+          nullable: true
+        provider:
+          description: pension provider, Name in JSAPS; null value = ""
+          example: Legal and General
+          type: string
+          nullable: true
+        address:
+          description: the surgery address. Calls component object PostalAddress
+          $ref: '#/components/schemas/PostalAddress'
+        phone_number:
+          description: the phone number for the organisation; null value = ""
+          example: 0113 25678978
+          type: string
+          nullable: true
+        first_payment_date:
+          description: first payment date, From in JSAPS; null value = ""
+          type: string
+          nullable: true
+          format: date
+          example: 20/04/19
+          pattern: DD/MM/YY
+        amount_gross:
+          description: pension amount before deductions, Gross Amt in JSAPS; null value = -1.00
+          type: number
+          nullable: true
+          example: 55.11
+          minimum: 0.00
+        amount_net:
+          description: pension amount after deductions, Net Amt in JSAPS; null value = -1.00
+          example: 45.11
+          type: number
+          nullable: true
+          minimum: 0.00
+        payment_schedule:
+          description: how often payment is made (converted to JSAPS code); null value = -1
+          type: integer
+          nullable: true
+          example: 4
+          minimum: 1
+          maximum: 9
+    EmployedWork:
+      description: details of the employer, job, payments etc. this may be repeated if the claimant has more than one job; only present if employed_work_details is NOT empty
+      type: object
+      required:
+        - employment_status
+        - organisation
+        - same_hours_every_week
+        - weekly_hours
+        - currently_off_sick
+        - payment_amount
+        - payment_schedule
+        - paid_expenses
+        - support_worker_indicator
+      properties:
+        employment_status:
+          description: calls the object Employment status. only present if employed_work_details is NOT empty
+          $ref: '#/components/schemas/EmploymentStatus'
+          nullable: false
+        organisation:
+          description: employer information (Employer in JSAPS); calls object organisationRole
+          $ref: '#/components/schemas/OrganisationRole'
+          nullable: true--
+        same_hours_every_week:
+          description: do you volunteer for the same hours every week? (Y/N).  if present must be Y or N but if Currently_off_sick is Y then nullable value is ""
+          $ref: '#/components/schemas/YesNo'
+          nullable: true
+        weekly_hours:
+          description: if same hours, how many?; Usually contains value but may have blank in some circumstances in which case may be null value = 0
+          type: integer
+          nullable: true
+          example: 12
+          minimum: 0
+          maximum: 99
+        currently_off_sick:
+          description: are you currently off sick from your job? (Y/N) If present must be Y or N
+          $ref: '#/components/schemas/YesNo'
+          nullable: false
+        last_working_day:
+          description: if off sick, when was the last working day; null value = ""
+          type: string
+          nullable: true
+          format: date
+          example: 20/07/20
+          pattern: DD/MM/YY
+        payment_amount:
+          description: how much do you get paid? Usually contains value unless SSP in payment or currently_off_sick = Y, in which case may be null value = 0.00
+          example: 51.11
+          type: number
+          nullable: true
+          minimum: 0.00
+        payment_schedule:
+          description: how often the claimant is paid. data from front end is converted for output as JSAPS code. Usually contains value unless SSP in payment or currently_off_sick = Y in which case may be null value = -1
+          type: integer
+          nullable: true
+          example: 4
+          minimum: 1
+          maximum: 9
+        paid_expenses:
+          description: are you paid expenses? (Y/N) If present must be Y or N
+          $ref: '#/components/schemas/YesNo'
+          nullable: false
+        support_worker_indicator:
+          description: support worker help, Type in JSAPS. front end data converted to relevant JSAPS code for output. Usually contains value unless SSP in payment or currently_off_sick = Y in which case may be null value = -1
+          type: integer
+          nullable: false
+          example: 3
+          minimum: 2
+          maximum: 3
+    EmploymentStatus:
+      description: what type of employment the claimant has. if present must contain one of four values below. This is a multiple check box in UI so if more than one is selected API will only pass the FIRST value.
+      type: string
+      enum:
+        - Employee
+        - Self-Employed
+        - Sub-Contractor
+        - Company Director
+    VoluntaryWork:
+      description: the details of the voluntary work the claimant has. Only present if voluntary_work_assignments is NOT empty.
+      type: object
+      required:
+        - organisation
+        - same_hours_every_week
+        - weekly_hours
+      properties:
+        organisation:
+          description: details of the voluntary organisation. calls component object OrganisationRole. only required if voluntary_work_assignments is NOT empty
+          $ref: '#/components/schemas/OrganisationRole'
+          nullable: false
+        same_hours_every_week:
+          description: do you volunteer for the same hours every week? (Y/N) must be Y or N if present but if off sick may present as null value in which case value = ""
+          $ref: '#/components/schemas/YesNo'
+          nullable: true
+        weekly_hours:
+          description: if same hours, how many? if same_hours_every_week is Y then value must be present. otherwise null value = -1
+          type: integer
+          nullable: true
+          example: 12
+          minimum: 0
+          maximum: 99
+    OrganisationRole:
+      description: organisation or employer information; if present much contain some data in relevant fields
+      type: object
+      required:
+        - org_name
+        - role
+        - address
+      properties:
+        org_name:
+          description: organisation name. if present must contain a value
+          example: Department for Work and Pensions
+          type: string
+          nullable: false
+        role:
+          description: role within the organisation. if present must contain a value
+          example: Software Engineer
+          type: string
+          nullable: false
+        address:
+          description: the organisation address. calls component object PostalAddress. if voluntary organisation is present cannot be empty
+          $ref: '#/components/schemas/PostalAddress'
+          nullable: false
+        phone_number:
+          description: contact phone number; null value = ""
+          example: 011325678978
+          type: string
+    StatutoryExtraPayments:
+      description: lists any stat extra payments. must contain one of four values below
+      type: string
+      nullable: false
+      enum:
+        - Statutory Maternity Pay
+        - Statutory Paternity Pay
+        - Statutory Adoption Pay
+        - Statutory Shared Parental Pay
+        - None
+    YesNo:
+      type: string
+      nullable: false
+      example: 'Y'
+      enum:
+        - 'Y'
+        - 'N'
+    PostalAddress:
+      type: object
+      required:
+        - address_line_1
+        - address_line_2
+        - town
+        - county
+        - postcode
+      properties:
+        address_line_1:
+          type: string
+          nullable: false
+          description: name / number of building / flat number / street name in JSAPS. must contain a value
+          example: 25 Town Street
+        address_line_2:
+          description: second line of the address. District in JSAPS. null value = ""
+          type: string
+          nullable: true
+          example: Meanwood
+        town:
+          type: string
+          nullable: true
+          description: Town in JSAPS. null value = ""
+          example: Leeds
+        county:
+          type: string
+          nullable: true
+          description: County in JSAPS; null value = ""
+          example: West Yorkshire
+        postcode:
+          type: string
+          nullable: false
+          description: Postcode in JSAPS. must contain a value; may pass with or without the space - eg. LS2 7UA or LS27UA - deping on what claimant inputs to UI (ie we pass exactly what is input)
+          pattern: >-
+            (^[A-Z&&[^QVX]]([A-Z&&[^IJZ]][0-9]([0-9]?|[ABEHMNPRVWXY]?)|[0-9]([0-9]?|[ABCDEFGHJKPSTUW]?))[0-9][A-Z&&[^CIKMOV]]{2}$)

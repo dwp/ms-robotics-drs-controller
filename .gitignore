@@ -1,0 +1,13 @@
+**/.DS_Store
+.idea/
+*.iml
+target/
+.classpath
+.project
+.settings/
+*.log
+.factorypath
+gitlab-ci/
+.gitlab-ci.yml
+.npmrc
+.env.dev

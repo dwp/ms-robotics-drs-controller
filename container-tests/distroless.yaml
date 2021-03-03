@@ -1,0 +1,12 @@
+schemaVersion: "2.0.0"
+
+fileExistenceTests:
+  - name: 'Jar File'
+    path: '/ms-robotics-drs-controller.jar'
+    shouldExist: true
+  - name: 'Config File'
+    path: '/config.yml'
+    shouldExist: true
+
+metadataTest:
+  entrypoint: [ "java", "-jar", "/ms-robotics-drs-controller.jar", "server", "/config.yml" ]
