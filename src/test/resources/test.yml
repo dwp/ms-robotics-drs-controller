@@ -1,0 +1,48 @@
+server:
+  applicationConnectors:
+  - type: http
+    port: 9501
+  adminConnectors:
+  - type: http
+    port: 0
+  requestLog:
+    type: external
+
+sqsConfiguration:
+  s3EndpointOverride: "http://localstack:4572"
+  endpointOverride: "http://localstack:4576"
+  pathStyleAccessEnabled: true
+  s3BucketName: null
+  region: US_EAST_1
+
+snsConfiguration:
+  s3EndpointOverride: "http://localstack:4572"
+  endpointOverride: "http://localstack:4575"
+  pathStyleAccessEnabled: true
+  s3BucketName: null
+  region: US_EAST_1
+
+sqsQueueName: esa-robotics-queue
+
+snsTopicName: esa-robotics-topic
+snsRoutingKey: sns.drs.verified.submission
+snsSubject: verified-esa-claim
+snsEncryptMessages: true
+
+kmsQueueCryptoConfiguration:
+  kmsEndpointOverride: http://localstack:4599
+  dataKeyRequestId: alias/test_request_id
+
+caseServiceApplicationEndpoint: http://localhost:3010/v1/cases/:{caseId}/application
+caseServiceQueryEndpoint: http://localhost:3010/v1/cases/:{caseId}
+caseServiceParameter: caseId
+
+caseServiceTruststoreFile: null
+caseServiceTruststorePass: null
+caseServiceKeystoreFile: null
+caseServiceKeystorePass: null
+
+logging:
+  level: INFO
+  loggers:
+    "uk.gov": DEBUG

@@ -1,0 +1,213 @@
+{
+  "applicant": {
+    "residence_address": {
+      "lines": [
+        "6068 Metz View",
+        "",
+        ""
+      ],
+      "premises": "",
+      "postcode": "LS1 1DJ"
+    },
+    "forenames": "Steve",
+    "surname": "Williams",
+    "dob": "1981-04-07",
+    "contact_options": [
+      {
+        "_id": "5d28a1871e43510137d5f10c",
+        "method": "telmobile",
+        "data": "(623) 625-1791",
+        "preferred": true
+      }
+    ]
+  },
+  "msg_id": "esa.submission.new",
+  "ref": "857MKL",
+  "date_submitted": "2019-07-12T15:04:26.824Z",
+  "data_capture": {
+    "language": "en",
+    "conditions": [
+      {
+        "name": "back-end application",
+        "start_date": "2003-02-01"
+      },
+      {
+        "name": "1080p bandwidth",
+        "start_date": "2003-02-01"
+      },
+      {
+        "name": "online application",
+        "start_date": "2003-02-01"
+      }
+    ],
+    "medical_centre": {
+      "name": "Rolfson, Roob and Goldner",
+      "tel": "(146) 995-4828",
+      "address": {
+        "lines": [
+          "66990 Darren Prairie",
+          "",
+          "Port Amya"
+        ],
+        "premises": "",
+        "postcode": "LS1 1DJ"
+      },
+      "doctor": "Dr. Brooks Prosacco"
+    },
+    "statutory_pay_other": "none",
+    "nino": "AA370773A",
+    "bank_account_name": "Lexus Maggio",
+    "bank_name": "Wunsch, Stokes and Kulas",
+    "bank_sort_code": "011934",
+    "bank_account_number": "12345678",
+    "claim_start_date": "2022-06-21",
+    "back_to_work": "yes",
+    "back_to_work_date": "2019-08-12",
+    "pregnant": "no",
+    "severe_condition": "no",
+    "coronavirus": "yes",
+    "coronavirus_date": "2020-02-02",
+    "other_health_condition": "yes",
+    "hospital_inpatient": "yes",
+    "hospital_name": "Gerhold LLC",
+    "hospital_ward": "Kuphal Inc",
+    "hospital_admission_date": "2019-04-12",
+    "doc_share_with_dwp": "yes",
+    "dwp_share_with_doc": "yes",
+    "voluntary_work_question": "yes",
+    "voluntary_work": [
+      {
+        "organisation_name": "Prosacco Group",
+        "organisation_address": {
+          "lines": [
+            "3398 Trantow Plains",
+            "",
+            ""
+          ],
+          "premises": "",
+          "postcode": "LS1 1DJ"
+        },
+        "role": "In minus enim. Ut animi eius qui aut. Ea maiores quod eum et hic quam cum ratione fuga. In nemo corrupti quo sed voluptatem officia ipsam enim asperiores. Sed voluptates nesciunt autem quod nemo.",
+        "same_hours": "yes",
+        "hours": "1"
+      },
+      {
+        "organisation_name": "Hilll Group",
+        "organisation_address": {
+          "lines": [
+            "1230 Sawayn Course",
+            "",
+            ""
+          ],
+          "premises": "",
+          "postcode": "LS1 1DJ"
+        },
+        "role": "Iusto dolorum ratione earum est qui officiis delectus quis. Corrupti non reiciendis. Temporibus non ea distinctio. Error molestiae saepe molestiae sint ut.",
+        "same_hours": "yes",
+        "hours": "1"
+      },
+      {
+        "organisation_name": "Leannon and Sons",
+        "organisation_address": {
+          "lines": [
+            "018 Jaydon Haven",
+            "",
+            ""
+          ],
+          "premises": "",
+          "postcode": "LS1 1DJ"
+        },
+        "role": "Tenetur enim quae recusandae enim rerum explicabo facilis. Et voluptas sint itaque numquam eaque. Et facere est deserunt.",
+        "same_hours": "yes",
+        "hours": "1"
+      }
+    ],
+    "employment_question": "yes",
+    "employments": [
+      {
+        "job_title": "Dynamic Division Developer",
+        "employer_name": "Gorczany Group",
+        "employer_tel": "(515) 472-9556",
+        "employer_address": {
+          "lines": [
+            "38870 Joanny Stream",
+            "",
+            "Jefferyhaven"
+          ],
+          "premises": "",
+          "postcode": "LS1 1DJ"
+        },
+        "employment_status": [
+          "employee",
+          "subContractor"
+        ],
+        "off_sick": "no",
+        "same_hours": "yes",
+        "hours": "12",
+        "net_pay": "1234",
+        "frequency": "every4Weeks",
+        "support": "yes",
+        "expenses_question": "yes",
+        "expenses_details": "Qui corporis facilis quam vel maiores autem. Ducimus animi sed soluta et voluptate sed. Est ut et non voluptatem qui maiores fugiat vel ipsa. Reprehenderit ex aspernatur id deserunt in."
+      }
+    ],
+    "ssp": "yes",
+    "ssp_end": "2019-08-02",
+    "pension_question": "yes",
+    "pensions": [
+      {
+        "pension_provider": "Kessler - Kuhlman",
+        "provider_ref": "1-050-886-2068",
+        "provider_tel": "(652) 689-1146",
+        "provider_address": {
+          "lines": [
+            "67269 Dameon Green",
+            "",
+            "Alistad"
+          ],
+          "premises": "",
+          "postcode": "LS1 1DJ"
+        },
+        "start_date": "2018-07-12",
+        "deductions": "no",
+        "amount_gross": "1423",
+        "frequency": "every4Weeks",
+        "inherited": "yes"
+      }
+    ],
+    "insurance_question": "yes",
+    "insurance": [
+      {
+        "insurance_provider": "Franecki - Goodwin",
+        "provider_ref": "1-545-462-8486",
+        "provider_tel": "(988) 057-5386",
+        "provider_address": {
+          "lines": [
+            "88077 Herman Knoll",
+            "",
+            "Mittieburgh"
+          ],
+          "premises": "",
+          "postcode": "LS1 1DJ"
+        },
+        "amount": "7861",
+        "frequency": "quarterly",
+        "premiums": "no",
+        "employment_end_date": "2019-05-17"
+      }
+    ],
+    "correspondence_address": {
+      "lines": [
+        "2 main street",
+        "",
+        "leeds"
+      ],
+      "premises": "",
+      "postcode": "ls64pt"
+    },
+    "mobile": "yes"
+  },
+  "declaration": "By sending this application you confirm that:\nthe information you've given is correct and complete as far as you know\nyou'll report any changes in your circumstances\nyou'll pay back any money you're overpaid if you're asked to\nYou could be prosecuted or have to pay a penalty if you deliberately give the wrong or incomplete information or do not report changes.\nI understand, send my application",
+  "tags": [],
+  "id": "5d28a1871e43510137d5f10b"
+}
