@@ -292,6 +292,13 @@ public class JsapsSubmissionRecordItemTest {
         is(equalTo(DataTransformation.yesNoToYN(initialObject.getDataCapture().getPregnant()))));
     assertThat("bad special_rule", builtObject.getSpecialRuleApplication(),
         is(equalTo(DataTransformation.yesNoToYN(initialObject.getDataCapture().getSevereCondition()))));
+
+    assertThat("bad consent_dwp_share_with_doc", builtObject.getConsentDwpShareWithDoc(),
+            is(equalTo(DataTransformation.yesNoToYN(initialObject.getDataCapture().getDwpShareWithDoc()))));
+
+    assertThat("bad consent_doc_share_with_dwp", builtObject.getConsentDocShareWithDwp(),
+            is(equalTo(DataTransformation.yesNoToYN(initialObject.getDataCapture().getDocShareWithDWP()))));
+
     assertThat(
         "bad ds1500_already_submitted",
         builtObject.getDs1500submitted(),

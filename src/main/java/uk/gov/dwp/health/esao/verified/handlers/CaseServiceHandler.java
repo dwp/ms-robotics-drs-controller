@@ -173,8 +173,8 @@ public class CaseServiceHandler {
     String tagJson = new ObjectMapper().writeValueAsString(list);
     httpPatch.setEntity(new StringEntity(tagJson));
     CloseableHttpResponse response = null;
-    if ((tags.size() == 3 && status.equals(MessageConstants.STATUS_SENT))
-            || (tags.size() == 4 && status.equals(MessageConstants.STATUS_DELIVERED))) {
+    if (tags.size() == 3 && status.equals(MessageConstants.STATUS_SENT)
+            || tags.size() == 4 && status.equals(MessageConstants.STATUS_DELIVERED)) {
       LOGGER.info("updating claim nino {}, reference {}, with status {} as true at {}",
           tags.get(0).getValue(), claimReferenceItem.getClaimRef(), status, timestamp);
       response =

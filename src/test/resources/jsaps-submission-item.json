@@ -123,6 +123,8 @@
   "special_rule_application": "Y",
   "ds1500_already_submitted": "Y",
   "coronavirus": "Y",
+  "consent_dwp_share_with_doc": "Y",
+  "consent_doc_share_with_dwp": "Y",
   "coronavirus_date": "02/02/20",
   "other_health_condition": "Y",
   "medical_conditions": [

@@ -99,7 +99,7 @@ public class JsapsTransformationHandlerTest {
     dataCapture = new DataCapture("en", conditionsList, medicalCentre, "yes", "yes", "yes", "yes", "maternity", "AA370773A", "John", "Llyods", "010101",
         null, "12312312", "2019-01-01", "yes", "yes", "2019-02-02", "yes", "2019-02-02", "yes", "2019-02-02", "yes", "no",
         "yes", "hosp_name", "hosp-ward", "2019-03-03", "yes", voluntaryWorksList, "yes", employmentsList, mandatoryAddress,
-        "yes", "2019-10-02", "yes", "2019-02-02", "yes", null, "yes", null, "yes", "no", "yes", "high-risk", "high risk description", "yes","2019-02-02", "yes", null, null, "yes", "English", "Welsh");
+        "yes", "2019-10-02", "yes", "2019-02-02", "yes", "no", null, "yes", null, "yes", "no", "username@domain.com", "yes", "high-risk", "high risk description", "yes","2019-02-02", "yes", null, null, "yes", "English", "Welsh");
 
     tags.add("_67678688");
     applicant = new Applicant(mandatoryAddress, "FName", "SName", "1981-01-01", contactOptionsList);
@@ -114,7 +114,7 @@ public class JsapsTransformationHandlerTest {
                                   "\"address_line_2\":\"xyz\",\"town\":\"\",\"county\":\"premises\",\"postcode\":\"NE7 7ND\"},\"language_completed\":\"en\",\"welsh_postcode\":\"Y\",\"written_comms\":\"English\",\"verbal_comms\":\"Welsh\",\"claim_start_date\":\"01/01/19\",\"ssp_received\":\"Y\",\"ssp_end_date\":\"02/10/19\",\"receiving_statutory_extra\":\"Statutory Maternity Pay\"," +
                                   "\"expected_fit_for_work_date\":\"02/02/19\",\"voluntary_work_activity\":\"Y\",\"voluntary_work_assignments\":[],\"employed_work\":\"Y\",\"employed_work_details\":[],\"receiving_pension\":\"Y\",\"pension_details\":[]," +
                                   "\"receiving_permanent_health_insurance\":\"Y\",\"health_insurance_details\":[],\"currently_in_hospital\":\"Y\",\"admission_date\":\"03/03/19\",\"pregnant\":\"Y\",\"baby_due_date\":\"02/02/19\",\"special_rule_application\":\"Y\"," +
-                                  "\"ds1500_already_submitted\":\"N\",\"coronavirus\":\"Y\",\"coronavirus_date\":\"02/02/19\",\"other_health_condition\":\"Y\",\"medical_conditions\":[{\"condition\":\"fever\",\"condition_start_date\":\"01/01/19\"}]," +
+                                  "\"ds1500_already_submitted\":\"N\",\"coronavirus\":\"Y\",\"consent_dwp_share_with_doc\":\"Y\",\"consent_doc_share_with_dwp\":\"Y\",\"coronavirus_date\":\"02/02/19\",\"other_health_condition\":\"Y\",\"medical_conditions\":[{\"condition\":\"fever\",\"condition_start_date\":\"01/01/19\"}]," +
                                   "\"gp_surgery_details\":{\"doctor_title\":\"Dr.\",\"doctor_forename\":\"Dr ABC\",\"doctor_surname\":\"\",\"surgery_name\":\"NHS NCL\",\"surgery_address\":{\"address_line_1\":\"abc\",\"address_line_2\":\"xyz\",\"town\":\"\"," +
                                   "\"county\":\"premises\",\"postcode\":\"NE7 7ND\"},\"phone_number\":\"067787787\"},\"banking_details\":{\"name\":\"Llyods\",\"account_holder_name\":\"John\",\"sort_code\":\"01-01-01\",\"account_number\":\"12312312\"}}";
     JsapsTransformationHandler jsapsTransformationHandler = new JsapsTransformationHandler();

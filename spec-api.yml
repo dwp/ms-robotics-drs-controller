@@ -4,8 +4,8 @@ info:
     IAG (intelligent-automation-garage) query endpoint to get available
     "new-style" ESA claims for processing.  These claims will be have been
     received into the department digitally and marked as 'available following claimant id checks.
-    This is version 9.0.0
-  version: 9.0.0
+    This is version 10.0.0
+  version: 10.0.0
   title: IAG interface for new-style ESA
 servers:
   - url: 'https://micro-service-to-be-agreed/iagQueryEsaSubmissionByClaimRef'
@@ -81,6 +81,8 @@ components:
         - pregnant
         - special_rule_application
         - coronavirus
+        - consent_dwp_share_with_doc
+        - consent_doc_share_with_dwp
         - gp_surgery_details
         - banking_details
       properties:
@@ -254,6 +256,14 @@ components:
           nullable: true
         coronavirus:
           description: is coronavirus (COVID-19) the main reason for your claim? (Y/N) must be Y or N
+          $ref: '#/components/schemas/YesNo'
+          nullable: false
+        consent_dwp_share_with_doc:
+          description: consent to share the outcome with your doctor? (Y/N) must be Y or N
+          $ref: '#/components/schemas/YesNo'
+          nullable: false
+        consent_doc_share_with_dwp:
+          description: consent for doctor to tell us about your health? (Y/N) must be Y or N
           $ref: '#/components/schemas/YesNo'
           nullable: false
         coronavirus_date:

@@ -172,6 +172,14 @@ public class JsapsSubmissionRecordItem implements BaseItem {
   @JsonProperty("coronavirus")
   private String coronavirus;
 
+  @NotNull
+  @JsonProperty("consent_dwp_share_with_doc")
+  private String consentDwpShareWithDoc;
+
+  @NotNull
+  @JsonProperty("consent_doc_share_with_dwp")
+  private String consentDocShareWithDwp;
+
   @JsonProperty("coronavirus_date")
   private String coronavirusDate;
 
@@ -328,6 +336,16 @@ public class JsapsSubmissionRecordItem implements BaseItem {
 
     if (isValid) {
       isValid = ValidationUtils.isValidYN(LOG, "coronavirus", getCoronavirus());
+    }
+
+    if (isValid) {
+      isValid =
+        ValidationUtils.isValidYN(LOG, "consent_dwp_share_with_doc", getConsentDwpShareWithDoc());
+    }
+
+    if (isValid) {
+      isValid =
+        ValidationUtils.isValidYN(LOG, "consent_doc_share_with_dwp", getConsentDocShareWithDwp());
     }
 
     if (isValid) {
@@ -605,6 +623,14 @@ public class JsapsSubmissionRecordItem implements BaseItem {
       } else {
         buildItem.setCoronavirusDate(MessageConstants.BLANK);
       }
+
+      //consent_dwp_share_with_doc
+      buildItem.setConsentDwpShareWithDoc(
+              DataTransformation.yesNoToYN(getCaseRecord().getDataCapture().getDwpShareWithDoc()));
+
+      //consent_doc_share_with_dwp
+      buildItem.setConsentDocShareWithDwp(
+              DataTransformation.yesNoToYN(getCaseRecord().getDataCapture().getDocShareWithDWP()));
 
       //other_health_condition
       buildItem.setOtherHealthCondition(

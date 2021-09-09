@@ -157,6 +157,7 @@
     "ssp": "yes",
     "ssp_end": "2019-08-02",
     "pension_question": "yes",
+    "pension_inherit": "no",
     "pensions": [
       {
         "pension_provider": "Kessler - Kuhlman",
@@ -208,7 +209,10 @@
       "premises": "",
       "postcode": "ls64pt"
     },
-    "mobile": "yes"
+    "mobile": "yes",
+    "military_overseas": "no",
+    "universal_credit": "no",
+    "work_overseas": "no"
   },
   "declaration": "By sending this application you confirm that:\nthe information you've given is correct and complete as far as you know\nyou'll report any changes in your circumstances\nyou'll pay back any money you're overpaid if you're asked to\nYou could be prosecuted or have to pay a penalty if you deliberately give the wrong or incomplete information or do not report changes.\nI understand, send my application",
   "tags": [],
