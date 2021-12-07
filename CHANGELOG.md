@@ -1,8 +1,16 @@
+<a name="2.1.0"></a>
+# 2.1.0 (2021-12-07)
+
+### Bug Fixes
+* ESAO-1469 Update validation in common-case-application-classes
+
+
 <a name="2.0.1"></a>
 # 2.0.1 (2021-09-21)
 
 ### Bug Fixes
 * ESAO-1423	Email address not displayed in PDF on DRS
+
 
 <a name="0.8.0"></a>
 # 0.8.0 (2021-02-12)
