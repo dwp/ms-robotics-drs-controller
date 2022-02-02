@@ -1,3 +1,11 @@
+<a name="2.1.1"></a>
+# 2.1.1 (2022-02-02)
+
+### Bug Fixes
+* ESAO-1532 Pipeline failing in ms-robotics-drs-controller
+* ESAO-1569 ms-robotics-drs-controller broken in non-prod
+
+
 <a name="2.1.0"></a>
 # 2.1.0 (2021-12-07)
 
