@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
 @SuppressWarnings( "deprecation" )
@@ -99,7 +99,9 @@ public class JsapsTransformationHandlerTest {
     dataCapture = new DataCapture("en", conditionsList, medicalCentre, "yes", "yes", "yes", "yes", "maternity", "AA370773A", "John", "Llyods", "010101",
         null, "12312312", "2019-01-01", "yes", "yes", "2019-02-02", "yes", "2019-02-02", "yes", "2019-02-02", "yes", "no",
         "yes", "hosp_name", "hosp-ward", "2019-03-03", "yes", voluntaryWorksList, "yes", employmentsList, mandatoryAddress,
-        "yes", "2019-10-02", "yes", "2019-02-02", "yes", "no", null, "yes", null, "yes", "no", "username@domain.com", "yes", "high-risk", "high risk description", "yes","2019-02-02", "yes", null, null, "yes", "English", "Welsh");
+        "no", null, "2019-10-02", "yes", "2019-10-02", "yes", null, "yes", "no",  null, "yes", null, "yes", "no", "username@domain.com", "yes", "high-risk", "high risk description", "yes","2019-02-02", "yes", null, null, "yes", "English", "Welsh");
+
+
 
     tags.add("_67678688");
     applicant = new Applicant(mandatoryAddress, "FName", "SName", "1981-01-01", contactOptionsList);

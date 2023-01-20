@@ -52,7 +52,7 @@ public class CaseServiceHandlerTest {
   @Rule public WireMockRule caseServiceMock = new WireMockRule(wireMockConfig().port(8877));
 
   @Before
-  public void setup() throws MalformedURLException {
+  public void setup() throws Exception {
     tlsConnectionBuilder = new TLSConnectionBuilder(null, null, null, null);
 
     when(configuration.getCaseServiceApplicationEndpoint())

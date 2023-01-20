@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.dwp.health.crypto.CryptoDataManager;
 import uk.gov.dwp.health.crypto.MessageEncoder;
-import uk.gov.dwp.health.crypto.exception.CryptoException;
 import uk.gov.dwp.health.esao.verified.ServiceInfoResource;
 import uk.gov.dwp.health.esao.verified.SubmissionHandlerResource;
 import uk.gov.dwp.health.esao.verified.consumers.IncomingMgSubscription;
@@ -41,7 +40,7 @@ public class VerifiedSubmissionHandlerApplication
 
   @Override
   public void run(VerifiedSubmissionHandlerConfiguration configuration, Environment environment)
-      throws CryptoException {
+      throws Exception {
     final TLSConnectionBuilder connectionBuilder =
         new TLSConnectionBuilder(
             configuration.getCaseServiceTruststoreFile(),

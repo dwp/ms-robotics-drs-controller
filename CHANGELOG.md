@@ -1,3 +1,10 @@
+<a name="2.2.0"></a>
+# 2.2.0 (2023-01-19)
+
+### Features
+* feat: add reason no ssp
+* feat: update dockerfile user
+
 <a name="2.1.1"></a>
 # 2.1.1 (2022-02-02)
 
