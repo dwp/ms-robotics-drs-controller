@@ -16,7 +16,6 @@ import uk.gov.dwp.health.esao.verified.items.drs.EsaDrsMetadata;
 import uk.gov.dwp.health.esao.verified.utils.DataTransformation;
 import uk.gov.dwp.health.messageq.amazon.sns.MessagePublisher;
 import uk.gov.dwp.health.messageq.amazon.sqs.events.SqsReceivedMessageEvent;
-import uk.gov.dwp.health.messageq.exceptions.EventsManagerException;
 import uk.gov.dwp.health.messageq.items.event.EventMessage;
 import uk.gov.dwp.health.messageq.items.event.MetaData;
 import uk.gov.dwp.regex.InvalidNinoException;
@@ -51,6 +50,7 @@ public class IncomingMgSubscription implements SqsReceivedMessageEvent {
     ClaimReferenceItem claimReferenceItem =
         new ObjectMapper()
             .readValue(messageContent.serialisedBodyContentsToJson(), ClaimReferenceItem.class);
+
     if (claimReferenceItem.isContentValid()) {
 
       Response response = caseServiceHandler.queryCaseService(claimReferenceItem);
@@ -71,13 +71,14 @@ public class IncomingMgSubscription implements SqsReceivedMessageEvent {
             String correlationId = drsDispatchPayload(claimReferenceItem, submissionItem);
             LOG.info("successfully sent to DRS with correlationId = {}", correlationId);
 
-            caseServiceHandler.updateCase(claimReferenceItem,
+            caseServiceHandler.updateCase(claimReferenceItem, MessageConstants.STATUS_SENT);
+
+            LOG.info(
+                "claim reference {} is successfully updated with status {} as true",
+                claimReferenceItem.getClaimRef(),
                 MessageConstants.STATUS_SENT);
 
-            LOG.info("claim reference {} is successfully updated with status {} as true",
-                claimReferenceItem.getClaimRef(), MessageConstants.STATUS_SENT);
-
-          } catch (EventsManagerException e) {
+          } catch (EventsMessageException e) {
             throw new IOException("send to DRS failed", e);
           } catch (InvalidNinoException e) {
             throw new IOException("nino format is invalid", e);
@@ -104,7 +105,7 @@ public class IncomingMgSubscription implements SqsReceivedMessageEvent {
   }
 
   private String drsDispatchPayload(ClaimReferenceItem claimReference, RequestJson submissionItem)
-      throws IOException, EventsManagerException, InvalidNinoException {
+      throws IOException, EventsMessageException, InvalidNinoException {
     EsaDrsMetadata drsMetadata = new EsaDrsMetadata();
     final ObjectMapper mapper = new ObjectMapper();
 
@@ -123,11 +124,14 @@ public class IncomingMgSubscription implements SqsReceivedMessageEvent {
     if (submissionItem.getApplicant().getContactOptionsList().isEmpty()) {
       drsMetadata.setCustomerMobileNumber(MessageConstants.BLANK);
     } else {
-      drsMetadata.setCustomerMobileNumber(DataTransformation.transformToJsapsPhoneNumber(
-          submissionItem.getApplicant().getContactOptionsList().stream()
-               .filter(contact -> contact.isPreferred()).findFirst().get().getData()));
+      drsMetadata.setCustomerMobileNumber(
+          DataTransformation.transformToJsapsPhoneNumber(
+              submissionItem.getApplicant().getContactOptionsList().stream()
+                  .filter(contact -> contact.isPreferred())
+                  .findFirst()
+                  .get()
+                  .getData()));
     }
-
 
     UUID correlationId = UUID.randomUUID();
 
@@ -158,7 +162,7 @@ public class IncomingMgSubscription implements SqsReceivedMessageEvent {
         | EventsMessageException
         | CryptoException e) {
 
-      throw new EventsManagerException(
+      throw new EventsMessageException(
           String.format("%s :: %s", e.getClass().getName(), e.getMessage()));
     }
 

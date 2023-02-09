@@ -1,6 +1,8 @@
 package uk.gov.dwp.health.esao.verified;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpStatus;
@@ -24,7 +26,7 @@ import java.io.IOException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -33,8 +35,9 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SubmissionHandlerResourceTest {
-  private static final String DEFAULT_ERROR_MSG = "'Unable to process request' for any internal errors";
-  private static ObjectMapper mapper = new ObjectMapper();
+  private static final String DEFAULT_ERROR_MSG =
+      "'Unable to process request' for any internal errors";
+  private static final ObjectMapper MAPPER = new ObjectMapper();
 
   private static JsapsSubmissionRecordItem jsapsSubmissionRecordItem;
   private static RequestJson serialisedCaseFromDb;
@@ -50,19 +53,18 @@ public class SubmissionHandlerResourceTest {
 
   @BeforeClass
   public static void init() throws IOException {
-    String content = FileUtils.readFileToString(new File("src/test/resources/full-application-json.json"));
+    String content =
+        FileUtils.readFileToString(
+            new File("src/test/resources/full-application-json.json"), StandardCharsets.UTF_8);
     jsapsSubmissionRecordItem =
-        mapper.readValue(
-            FileUtils.readFileToString(new File("src/test/resources/jsaps-submission-item.json")),
+        MAPPER.readValue(
+            FileUtils.readFileToString(
+                new File("src/test/resources/jsaps-submission-item.json"), StandardCharsets.UTF_8),
             JsapsSubmissionRecordItem.class);
     serialisedCaseFromDb =
-        mapper.readValue(
-            String.format(content, "\"AS123123D\""),
-            RequestJson.class);
+        MAPPER.readValue(String.format(content, "\"AS123123D\""), RequestJson.class);
     invalidSerialisedCaseFromDb =
-        mapper.readValue(
-            String.format(content, "\"AS12312\""),
-            RequestJson.class);
+        MAPPER.readValue(String.format(content, "\"AS12312\""), RequestJson.class);
   }
 
   @Test
@@ -77,59 +79,69 @@ public class SubmissionHandlerResourceTest {
 
   @Test
   public void exampleReturnContainsClaimRef() throws IOException, ParseException {
-    ClaimReferenceItem claimRefClass = new ObjectMapper().readValue("{\"claim_ref\":\"hello123\"}", ClaimReferenceItem.class);
+    ClaimReferenceItem claimRefClass =
+        new ObjectMapper().readValue("{\"claim_ref\":\"hello123\"}", ClaimReferenceItem.class);
 
     when(caseServiceHandler.queryCaseService(any(ClaimReferenceItem.class)))
-        .thenReturn(Response.ok().entity(mapper.writeValueAsString(serialisedCaseFromDb)).build());
-    when(jsapsTransformationHandler.transformForJsaps(any(ClaimReferenceItem.class), any(RequestJson.class)))
-        .thenReturn(mapper.writeValueAsString(jsapsSubmissionRecordItem));
+        .thenReturn(Response.ok().entity(MAPPER.writeValueAsString(serialisedCaseFromDb)).build());
+    when(jsapsTransformationHandler.transformForJsaps(
+            any(ClaimReferenceItem.class), any(RequestJson.class)))
+        .thenReturn(MAPPER.writeValueAsString(jsapsSubmissionRecordItem));
 
     SubmissionHandlerResource instance =
         new SubmissionHandlerResource(jsapsTransformationHandler, caseServiceHandler);
-    Response response = instance.generatePdfDocument(mapper.writeValueAsString(claimRefClass));
+    Response response = instance.generatePdfDocument(MAPPER.writeValueAsString(claimRefClass));
 
     JsapsSubmissionRecordItem body =
-        mapper.readValue(response.getEntity().toString(), JsapsSubmissionRecordItem.class);
+        MAPPER.readValue(response.getEntity().toString(), JsapsSubmissionRecordItem.class);
     assertThat(response.getStatus(), is(equalTo(HttpStatus.SC_OK)));
     assertTrue(body.isContentValid());
 
     assertThat(
-        mapper.writeValueAsString(body),
-        is(equalTo(mapper.writeValueAsString(jsapsSubmissionRecordItem))));
+        MAPPER.writeValueAsString(body),
+        is(equalTo(MAPPER.writeValueAsString(jsapsSubmissionRecordItem))));
 
     verify(caseServiceHandler, times(1)).queryCaseService(claimCaptor.capture());
-    assertThat(mapper.writeValueAsString(claimCaptor.getValue()), is(equalTo(mapper.writeValueAsString(claimRefClass))));
+    assertThat(MAPPER.writeValueAsString(claimCaptor.getValue()), is(equalTo(MAPPER.writeValueAsString(claimRefClass))));
 
     verify(jsapsTransformationHandler, times(1)).transformForJsaps(claimCaptor.capture(), claimRecordCaptor.capture());
     assertThat(
-        mapper.writeValueAsString(claimRecordCaptor.getValue()),
-        is(equalTo(mapper.writeValueAsString(serialisedCaseFromDb))));
+        MAPPER.writeValueAsString(claimCaptor.getValue()),
+        is(equalTo(MAPPER.writeValueAsString(claimRefClass))));
+
+    verify(jsapsTransformationHandler, times(1))
+        .transformForJsaps(claimCaptor.capture(), claimRecordCaptor.capture());
+    assertThat(
+        MAPPER.writeValueAsString(claimRecordCaptor.getValue()),
+        is(equalTo(MAPPER.writeValueAsString(serialisedCaseFromDb))));
   }
 
   @Test
   public void exampleInvalidContent() throws IOException {
-    ClaimReferenceItem claimRefClass = new ObjectMapper().readValue("{\"claim_ref\":\"hello123\"}", ClaimReferenceItem.class);
+    ClaimReferenceItem claimRefClass =
+        new ObjectMapper().readValue("{\"claim_ref\":\"hello123\"}", ClaimReferenceItem.class);
 
     when(caseServiceHandler.queryCaseService(any(ClaimReferenceItem.class)))
-        .thenReturn(Response.ok().entity(mapper.writeValueAsString(invalidSerialisedCaseFromDb)).build());
+        .thenReturn(
+            Response.ok().entity(MAPPER.writeValueAsString(invalidSerialisedCaseFromDb)).build());
 
     SubmissionHandlerResource instance =
         new SubmissionHandlerResource(jsapsTransformationHandler, caseServiceHandler);
-    Response response = instance.generatePdfDocument(mapper.writeValueAsString(claimRefClass));
+    Response response = instance.generatePdfDocument(MAPPER.writeValueAsString(claimRefClass));
     assertThat(response.getStatus(), is(equalTo(HttpStatus.SC_BAD_REQUEST)));
   }
 
   @Test
   public void exampleNoContentResponse() throws IOException {
-    ClaimReferenceItem claimRefClass = new ObjectMapper().readValue("{\"claim_ref\":\"hello123\"}", ClaimReferenceItem.class);
+    ClaimReferenceItem claimRefClass =
+        new ObjectMapper().readValue("{\"claim_ref\":\"hello123\"}", ClaimReferenceItem.class);
 
     when(caseServiceHandler.queryCaseService(any(ClaimReferenceItem.class)))
         .thenReturn(Response.noContent().build());
 
     SubmissionHandlerResource instance =
         new SubmissionHandlerResource(jsapsTransformationHandler, caseServiceHandler);
-    Response response = instance.generatePdfDocument(mapper.writeValueAsString(claimRefClass));
+    Response response = instance.generatePdfDocument(MAPPER.writeValueAsString(claimRefClass));
     assertThat(response.getStatus(), is(equalTo(HttpStatus.SC_NO_CONTENT)));
   }
-
 }

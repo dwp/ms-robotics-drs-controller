@@ -1,4 +1,4 @@
-FROM gcr.io/distroless/java11@sha256:e0835ed9898c4e486761b1b1018bf8a92bdd04a8390038cf97e3dc7dbfcf25d8
+FROM gcr.io/distroless/java11@sha256:97386fb51202ca02f4ec0c9e9fde9a766545848b74fd309a6724f489a81b33fa
 USER nonroot
 EXPOSE 9501
 

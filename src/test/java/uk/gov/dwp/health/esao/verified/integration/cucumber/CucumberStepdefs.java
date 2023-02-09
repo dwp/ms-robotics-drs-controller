@@ -1,7 +1,6 @@
 package uk.gov.dwp.health.esao.verified.integration.cucumber;
 
 import com.amazonaws.regions.Regions;
-import com.amazonaws.services.sns.model.MessageAttributeValue;
 import com.amazonaws.services.sqs.model.Message;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,10 +11,10 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import java.io.File;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
@@ -39,7 +38,11 @@ import uk.gov.dwp.health.messageq.EventConstants;
 import uk.gov.dwp.health.messageq.amazon.items.AmazonConfigBase;
 import uk.gov.dwp.health.messageq.amazon.items.messages.SnsMessageClassItem;
 import uk.gov.dwp.health.messageq.amazon.utils.AmazonQueueUtilities;
+import uk.gov.dwp.health.messageq.items.event.EventMessage;
 import uk.gov.dwp.health.messageq.items.event.MetaData;
+
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
@@ -70,20 +73,20 @@ public class CucumberStepdefs {
   public WireMockRule caseServiceMock = new WireMockRule(wireMockConfig().port(3010));
 
   @Before
-  public void setup() throws CryptoException {
+  public void setup() throws CryptoException, IllegalBlockSizeException, NoSuchPaddingException, IOException, NoSuchAlgorithmException, InvalidKeyException {
 
     // create local properties to negate KMS & SQS from needing to access Metadata Service for IAM role privs
-    System.setProperty("aws.accessKeyId", "this_is_my_system_property_key");
-    System.setProperty("aws.secretKey", "abcd123456789");
+    System.setProperty("aws.accessKeyId", "dummyaccess");
+    System.setProperty("aws.secretKey", "dummysecret");
 
     AmazonConfigBase snsConfig = new AmazonConfigBase();
-    snsConfig.setEndpointOverride(LOCALSTACK_CONTAINER_HOST + ":4575");
+    snsConfig.setEndpointOverride(LOCALSTACK_CONTAINER_HOST + ":4566");
     snsConfig.setPathStyleAccessEnabled(true);
     snsConfig.setS3BucketName(null);
     snsConfig.setRegion(Regions.US_EAST_1);
 
     AmazonConfigBase sqsConfig = new AmazonConfigBase();
-    sqsConfig.setEndpointOverride(LOCALSTACK_CONTAINER_HOST + ":4576");
+    sqsConfig.setEndpointOverride(LOCALSTACK_CONTAINER_HOST + ":4566");
     sqsConfig.setPathStyleAccessEnabled(true);
     sqsConfig.setS3BucketName(null);
     sqsConfig.setRegion(Regions.US_EAST_1);
@@ -91,7 +94,8 @@ public class CucumberStepdefs {
     queueUtilities = new AmazonQueueUtilities(sqsConfig, snsConfig);
 
     CryptoConfig cryptoConfig = new CryptoConfig("alias/test_request_id");
-    cryptoConfig.setKmsEndpointOverride(LOCALSTACK_CONTAINER_HOST + ":4599");
+    cryptoConfig.setKmsEndpointOverride(LOCALSTACK_CONTAINER_HOST + ":4566");
+    cryptoConfig.setRegion(Regions.US_EAST_1);
     awsKmsCryptoClass = new CryptoDataManager(cryptoConfig);
 
     httpClient = HttpClientBuilder.create().build();
@@ -178,7 +182,6 @@ public class CucumberStepdefs {
   public void aQueueNamedHasBeenCreatedAndBoundToWithBindingKey(String queueName, int timeout, String topicName, String routingKey) {
     queueUtilities.createQueue(queueName, timeout);
 
-    queueUtilities.unsubscribeQueueFromTopic(queueName, topicName);
     queueUtilities.purgeQueue(queueName);
 
     queueUtilities.subscribeQueueToTopicWithRoutingKeyPolicy(queueName, topicName, routingKey);
@@ -214,27 +217,21 @@ public class CucumberStepdefs {
   public void iPublishACONTROLLERStyleJsonPayloadToExchangeWithRoutingKey(
       String encrypt, String claimRef, String topicName, String routingKey, String trigger)
       throws IOException, CryptoException {
-    String claimRefJson = new ObjectMapper().writeValueAsString(new ClaimReferenceItem(claimRef));
-    publishMessageFor(encrypt, claimRefJson, topicName, routingKey, trigger);
+    EventMessage msg = new EventMessage();
+    msg.setMetaData(new MetaData(Collections.singletonList(trigger), routingKey));
+    msg.setBodyContents(new ClaimReferenceItem(claimRef));
+    publishMessageFor(encrypt, msg, topicName);
   }
 
-  private void publishMessageFor(String encrypt, String messageContents, String topicName, String routingKey, String trigger)
+  private void publishMessageFor(String encrypt, EventMessage messageObject, String topicName)
       throws IOException, CryptoException {
-    MetaData metaData = new MetaData(Collections.singletonList(trigger), routingKey);
-    Map<String, MessageAttributeValue> mapItems = new HashMap<>();
-
-    mapItems.put(EventConstants.TRIGGERED_BY_SERIALISED_LIST, new MessageAttributeValue().withStringValue(metaData.getTriggeredBySerialised()));
-    mapItems.put(EventConstants.MESSAGE_CREATED_DT_STRING, new MessageAttributeValue().withStringValue(metaData.getDateCreated()));
-    mapItems.put(EventConstants.ROUTING_KEY_MARKER, new MessageAttributeValue().withStringValue(routingKey));
+    CryptoMessage cryptoMessage = new CryptoMessage();
 
     if ((encrypt != null) && (encrypt.equalsIgnoreCase("encrypted"))) {
-      CryptoMessage cryptoMessage = awsKmsCryptoClass.encrypt(messageContents);
-
-      mapItems.put(EventConstants.KMS_DATA_KEY_MARKER, new MessageAttributeValue().withStringValue(cryptoMessage.getKey()));
-      messageContents = cryptoMessage.getMessage();
+      cryptoMessage = awsKmsCryptoClass.encrypt(messageObject.serialisedBodyContentsToJson());
     }
 
-    queueUtilities.publishMessageToTopic(topicName, mapItems, "test-subject", messageContents);
+    queueUtilities.publishMessageToTopic(topicName, messageObject, "test-subject", cryptoMessage.getKey(), cryptoMessage.getMessage());
   }
 
   @And(
@@ -288,5 +285,10 @@ public class CucumberStepdefs {
 
     snsMessageClass.setMessage(msgContents);
     return snsMessageClass;
+  }
+
+  @And("^I wait (\\d+) seconds for the message to be processed$")
+  public void iWaitSecondsForTheMessageToBeProcessed(int seconds) throws InterruptedException {
+    TimeUnit.SECONDS.sleep(seconds);
   }
 }

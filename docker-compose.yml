@@ -1,45 +1,42 @@
-version: '3'
-networks:
-  test:
+version: '2.1'
+
 services:
   localstack:
     container_name: localstack
-    image: localstack/localstack:0.11.2 #Pinning to 0.11.2. latest contains bug preventing running services to be returned by curl on localstack service health checks issue 2454.
+    image: localstack/localstack:1.3.1
     environment:
-      SERVICES: ${LOCALSTACK_SERVICES}
-      HOSTNAME_EXTERNAL: ${LOCALSTACK_HOSTNAME}
-    networks:
-      - test
+      - AWS_ACCESS_KEY_ID=dummyaccess
+      - AWS_SECRET_ACCESS_KEY=dummysecret
+      - AWS_DEFAULT_REGION=us-east-1
+      - HOSTNAME_EXTERNAL=${LOCALSTACK_HOSTNAME}
+      - SERVICES=${LOCALSTACK_SERVICES}
+      - LS_LOG=info
+    healthcheck:
+      test: [ "CMD", "curl", "http://localhost:4566/_localstack/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    expose:
+      - 4566
+    volumes:
+      - ./localstack/kms.sh:/docker-entrypoint-initaws.d/kms.sh
 
-  localstack-init:
-    container_name: localstack-init
-    image: mesosphere/aws-cli
-    environment:
-      AWS_ACCESS_KEY_ID: dummyaccess
-      AWS_SECRET_ACCESS_KEY: dummysecret
-      AWS_DEFAULT_REGION: us-east-1
-    networks:
-      - test
-    entrypoint: /bin/sh -c
-    command: 
-      - |
-        until nc -z localstack 4599; do echo "localstack not available, sleeping 10."; sleep 10; done
-        aws kms create-key --endpoint-url http://localstack:4599 --output=text | sed -E 's/.*('"${KMS_KEY_PATTERN}"').*/\1/' > key.txt
-        aws kms create-alias --endpoint-url http://localstack:4599 --alias-name alias/test_request_id --target-key-id `cat key.txt`
-        while nc -z localstack 4599; do echo "localstack still running, keeping cli container active."; sleep 30; done
-
-  cucumber-tests: 
+  cucumber-tests:
     image: ${MAVEN_IMAGE}
+    environment:
+      - AWS_ACCESS_KEY_ID=dummyaccess
+      - AWS_SECRET_ACCESS_KEY=dummysecret
+      - AWS_DEFAULT_REGION=us-east-1
     entrypoint: /bin/bash -c
-    command:  
+    command:
       - |
-        until [ `curl -s http://localstack:8080/health | grep -o running | wc -l` = "$NUM_LOCALSTACK_SERVICES" ]; do echo "localstack services not available, sleeping 10."; sleep 10; done
-        sleep 10 #wait for keys to be created once localstack services are available (aws cli not available)
-        mvn -Dtest=uk.gov.dwp.health.esao.verified.integration.RunCukesTest ${MVN_OPTS} ${MVN_CLI_OPTS} test 
+        sleep 5 #wait for keys to be created once localstack services are available (aws cli not available)
+        mvn -Dtest=uk.gov.dwp.health.esao.verified.integration.RunCukesTest ${MVN_OPTS} ${MVN_CLI_OPTS} test
     working_dir: /usr/src
+    depends_on:
+      localstack:
+        condition: service_healthy
     volumes:
       - .:/usr/src
       - ${MVN_M2}:/root/.m2
-      - ${MVN_SETTINGS_FILE}:/root/.m2/settings.xml
-    networks:
-      - test
+      - ${MVN_SETTINGS_FILE_SAAS}:/root/.m2/settings.xml

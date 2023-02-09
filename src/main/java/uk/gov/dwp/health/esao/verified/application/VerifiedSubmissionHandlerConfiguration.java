@@ -6,12 +6,22 @@ import uk.gov.dwp.crypto.SecureStrings;
 import uk.gov.dwp.health.crypto.CryptoConfig;
 import uk.gov.dwp.health.messageq.amazon.items.AmazonConfigBase;
 
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SealedObject;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.net.URL;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 public class VerifiedSubmissionHandlerConfiguration extends Configuration {
-  private SecureStrings cipher = new SecureStrings();
+  private SecureStrings cipher;
+
+  public VerifiedSubmissionHandlerConfiguration()
+      throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+    cipher = new SecureStrings();
+  }
 
   @NotNull
   @JsonProperty("sqsConfiguration")
@@ -86,7 +96,8 @@ public class VerifiedSubmissionHandlerConfiguration extends Configuration {
     return getCipher().revealString(caseServiceTruststorePass);
   }
 
-  public void setCaseServiceTruststorePass(String caseServiceTruststorePass) {
+  public void setCaseServiceTruststorePass(String caseServiceTruststorePass)
+      throws IllegalBlockSizeException, IOException {
     this.caseServiceTruststorePass = getCipher().sealString(caseServiceTruststorePass);
   }
 
@@ -94,7 +105,8 @@ public class VerifiedSubmissionHandlerConfiguration extends Configuration {
     return getCipher().revealString(caseServiceKeystorePass);
   }
 
-  public void setCaseServiceKeystorePass(String caseServiceKeystorePass) {
+  public void setCaseServiceKeystorePass(String caseServiceKeystorePass)
+      throws IllegalBlockSizeException, IOException {
     this.caseServiceKeystorePass = getCipher().sealString(caseServiceKeystorePass);
   }
 

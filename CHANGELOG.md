@@ -1,3 +1,9 @@
+<a name="2.3.0"></a>
+# 2.3.0 (2023-02-09)
+
+### Features
+* feat: message-utility Upgrade
+
 <a name="2.2.0"></a>
 # 2.2.0 (2023-01-19)
 

@@ -9,18 +9,18 @@ server:
     type: external
 
 sqsConfiguration:
-  s3EndpointOverride: "http://localstack:4572"
-  endpointOverride: "http://localstack:4576"
+  s3EndpointOverride: "http://localstack:4566"
+  endpointOverride: "http://localstack:4566"
   pathStyleAccessEnabled: true
   s3BucketName: null
-  region: US_EAST_1
+  region: us-east-1
 
 snsConfiguration:
-  s3EndpointOverride: "http://localstack:4572"
-  endpointOverride: "http://localstack:4575"
+  s3EndpointOverride: "http://localstack:4566"
+  endpointOverride: "http://localstack:4566"
   pathStyleAccessEnabled: true
   s3BucketName: null
-  region: US_EAST_1
+  region: us-east-1
 
 sqsQueueName: esa-robotics-queue
 
@@ -30,8 +30,9 @@ snsSubject: verified-esa-claim
 snsEncryptMessages: true
 
 kmsQueueCryptoConfiguration:
-  kmsEndpointOverride: http://localstack:4599
+  kmsEndpointOverride: http://localstack:4566
   dataKeyRequestId: alias/test_request_id
+  awsRegion: us-east-1
 
 caseServiceApplicationEndpoint: http://localhost:3010/v1/cases/:{caseId}/application
 caseServiceQueryEndpoint: http://localhost:3010/v1/cases/:{caseId}
