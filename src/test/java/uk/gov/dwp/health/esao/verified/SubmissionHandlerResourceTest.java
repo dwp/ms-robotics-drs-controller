@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
+
+import jakarta.ws.rs.core.Response;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpStatus;
 import org.junit.BeforeClass;
@@ -18,8 +20,6 @@ import uk.gov.dwp.health.esao.verified.handlers.CaseServiceHandler;
 import uk.gov.dwp.health.esao.verified.handlers.JsapsTransformationHandler;
 import uk.gov.dwp.health.esao.verified.items.ClaimReferenceItem;
 import uk.gov.dwp.health.esao.verified.items.JsapsSubmissionRecordItem;
-
-import javax.ws.rs.core.Response;
 
 import java.io.File;
 import java.io.IOException;

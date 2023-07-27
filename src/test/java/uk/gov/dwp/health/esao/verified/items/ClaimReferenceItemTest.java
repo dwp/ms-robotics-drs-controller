@@ -1,13 +1,14 @@
 package uk.gov.dwp.health.esao.verified.items;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
 import java.io.IOException;
 import java.util.Set;
 
@@ -19,7 +20,10 @@ import static org.junit.Assert.assertTrue;
 
 public class ClaimReferenceItemTest {
   private static final Logger LOG = LoggerFactory.getLogger(ClaimReferenceItemTest.class.getName());
-  private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+  private Validator validator = Validation.byDefaultProvider()
+          .configure()
+          .messageInterpolator(new ParameterMessageInterpolator())
+          .buildValidatorFactory().getValidator();
 
   @Test
   public void nullItemShouldError() throws IOException {
@@ -51,7 +55,7 @@ public class ClaimReferenceItemTest {
   }
 
   private void testViolations(
-      Set<ConstraintViolation<ClaimReferenceItem>> violations, int expectedViolations) {
+          Set<ConstraintViolation<ClaimReferenceItem>> violations, int expectedViolations) {
     for (ConstraintViolation<ClaimReferenceItem> violation : violations) {
       LOG.error(violation.getMessage());
     }

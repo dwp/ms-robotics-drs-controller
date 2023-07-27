@@ -1,11 +1,11 @@
 package uk.gov.dwp.health.esao.verified.handlers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.ValidationException;
 import uk.gov.dwp.health.esao.shared.models.RequestJson;
 import uk.gov.dwp.health.esao.verified.items.ClaimReferenceItem;
 import uk.gov.dwp.health.esao.verified.items.JsapsSubmissionRecordItem;
 
-import javax.validation.ValidationException;
 import java.io.IOException;
 import java.text.ParseException;
 

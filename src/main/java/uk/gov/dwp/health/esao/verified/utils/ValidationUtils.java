@@ -1,11 +1,12 @@
 package uk.gov.dwp.health.esao.verified.utils;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 import org.slf4j.Logger;
 import uk.gov.dwp.health.esao.shared.util.StatutoryExtraPaymentEnum;
 import uk.gov.dwp.health.esao.verified.constants.MessageConstants;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,7 +20,10 @@ public class ValidationUtils {
 
   public static <T> boolean validateAnnotations(Logger log, T clazz) {
     Set<ConstraintViolation<T>> validations =
-        Validation.buildDefaultValidatorFactory().getValidator().validate(clazz);
+            Validation.byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(new ParameterMessageInterpolator())
+                    .buildValidatorFactory().getValidator().validate(clazz);
     for (ConstraintViolation<T> item : validations) {
       log.debug("{}.{} {}", clazz.getClass().getName(), item.getPropertyPath(), item.getMessage());
     }

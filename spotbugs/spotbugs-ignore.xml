@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <Match>
+        <Bug pattern="EI_EXPOSE_REP"/>
+    </Match>
+    <Match>
+        <Bug pattern="EI_EXPOSE_REP2"/>
+    </Match>
+    <Match>
+        <class>uk.gov.dwp.health.esao.verified.info.PropertyFileInfoProvider</class>
+        <Bug pattern="DCN_NULLPOINTER_EXCEPTION"/>
+    </Match>
+    <Match>
+        <class>uk.gov.dwp.health.esao.verified.items.EmployedWorkTransformItem</class>
+        <Bug pattern="DM_BOXED_PRIMITIVE_FOR_PARSING"/>
+    </Match>
+</FindBugsFilter>

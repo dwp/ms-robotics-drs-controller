@@ -3,6 +3,7 @@ package uk.gov.dwp.health.esao.verified.handlers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.text.ParseException;
 
+import jakarta.validation.ValidationException;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,13 +21,12 @@ import uk.gov.dwp.health.esao.shared.models.NonMandatoryAddress;
 import uk.gov.dwp.health.esao.shared.models.RequestJson;
 import uk.gov.dwp.health.esao.shared.models.VoluntaryWork;
 import uk.gov.dwp.health.esao.verified.items.ClaimReferenceItem;
-import javax.validation.ValidationException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 @SuppressWarnings( "deprecation" )

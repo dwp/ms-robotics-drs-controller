@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,7 +17,6 @@ import uk.gov.dwp.health.esao.verified.interfaces.BaseItem;
 import uk.gov.dwp.health.esao.verified.utils.DataTransformation;
 import uk.gov.dwp.health.esao.verified.utils.ValidationUtils;
 
-import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter

@@ -3,6 +3,10 @@ package uk.gov.dwp.health.esao.verified;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.ValidationException;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.core.Response;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,10 +16,6 @@ import uk.gov.dwp.health.esao.verified.handlers.CaseServiceHandler;
 import uk.gov.dwp.health.esao.verified.handlers.JsapsTransformationHandler;
 import uk.gov.dwp.health.esao.verified.items.ClaimReferenceItem;
 
-import javax.validation.ValidationException;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
 
 @Path("/")
 public class SubmissionHandlerResource {

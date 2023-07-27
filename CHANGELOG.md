@@ -1,3 +1,8 @@
+<a name="2-4-0"></a>
+# 2-4-0 (2023-07-27)
+
+* ci: update to java 17 ([d050a3c](https://gitlab.com/dwp/health/ns-esa/components/ms-robotics-drs-controller/-/commit/d050a3c))
+
 <a name="2.3.0"></a>
 # 2.3.0 (2023-02-09)
 

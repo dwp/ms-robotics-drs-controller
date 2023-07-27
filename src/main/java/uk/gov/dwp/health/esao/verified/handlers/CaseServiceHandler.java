@@ -1,6 +1,7 @@
 package uk.gov.dwp.health.esao.verified.handlers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.ws.rs.core.Response;
 import org.apache.commons.text.StringSubstitutor;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -18,7 +19,6 @@ import uk.gov.dwp.health.esao.verified.items.ClaimReferenceItem;
 import uk.gov.dwp.tls.TLSConnectionBuilder;
 import uk.gov.dwp.tls.TLSGeneralException;
 
-import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.net.URL;
 import java.security.KeyManagementException;

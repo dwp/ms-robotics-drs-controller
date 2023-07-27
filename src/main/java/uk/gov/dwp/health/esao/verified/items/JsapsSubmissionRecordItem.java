@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
+import jakarta.validation.ValidationException;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,8 +26,6 @@ import uk.gov.dwp.health.esao.verified.utils.DataTransformation;
 import uk.gov.dwp.health.esao.verified.utils.ValidationUtils;
 import uk.gov.dwp.regex.NinoValidator;
 
-import javax.validation.ValidationException;
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;

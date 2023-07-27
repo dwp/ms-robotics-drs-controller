@@ -1,7 +1,8 @@
 package uk.gov.dwp.health.esao.verified.application;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.dropwizard.Configuration;
+import io.dropwizard.core.Configuration;
+import jakarta.validation.constraints.NotNull;
 import uk.gov.dwp.crypto.SecureStrings;
 import uk.gov.dwp.health.crypto.CryptoConfig;
 import uk.gov.dwp.health.messageq.amazon.items.AmazonConfigBase;
@@ -9,7 +10,6 @@ import uk.gov.dwp.health.messageq.amazon.items.AmazonConfigBase;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SealedObject;
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.net.URL;
 import java.security.InvalidKeyException;

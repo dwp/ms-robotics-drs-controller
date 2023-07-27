@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
+
+import jakarta.validation.ValidationException;
+import jakarta.ws.rs.core.Response;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,8 +24,6 @@ import uk.gov.dwp.health.esao.verified.items.ClaimReferenceItem;
 import uk.gov.dwp.health.messageq.amazon.sns.MessagePublisher;
 import uk.gov.dwp.health.messageq.items.event.EventMessage;
 
-import javax.validation.ValidationException;
-import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
 
