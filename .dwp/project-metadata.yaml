@@ -6,11 +6,11 @@ project:
   - project_id: 26967598
     component_name: ms-robotics-drs-controller
 
-    version: 2.3.0
+    version: 2.4.1
 
     last_verified:
-      date: "2023-07-18"
-      name: "@dillon-vaghela"
+      date: "2024-03-01"
+      name: "@aayush.srikanth"
 
     tags:
       payments: false

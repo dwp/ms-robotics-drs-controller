@@ -5,7 +5,7 @@
 
     <groupId>uk.gov.dwp.health.esao</groupId>
     <artifactId>ms-robotics-drs-controller</artifactId>
-    <version>2.4.0</version>
+    <version>2.4.1</version>
 
     <properties>
         <dwp.secure-sockets.version>1.10.0-c057ae20</dwp.secure-sockets.version>
@@ -23,17 +23,17 @@
         <commons-text.version>1.10.0</commons-text.version>
         <commons-io.version>2.13.0</commons-io.version>
         <plugin.springboot.shade.version>3.1.1</plugin.springboot.shade.version>
-        <dropwizard.version>4.0.1</dropwizard.version>
+        <dropwizard.version>4.0.5</dropwizard.version>
         <dropwizard.junit4.version>4.0.0</dropwizard.junit4.version>
         <wiremock.version>2.27.2</wiremock.version>
         <mockito.version>5.4.0</mockito.version>
-        <jackson.version>2.15.2</jackson.version>
+        <jackson.version>2.16.1</jackson.version>
         <lombok.version>1.18.28</lombok.version>
         <jacoco.version>0.8.10</jacoco.version>
         <owasp.version>8.3.1</owasp.version>
         <org.testcontainers.version>1.18.3</org.testcontainers.version>
         <cucumber-core.version>7.12.1</cucumber-core.version>
-        <bc-fips.version>1.0.2.3</bc-fips.version>
+        <bc-fips.version>1.0.2.4</bc-fips.version>
         <slf4j.version>2.0.7</slf4j.version>
         <jakarta.version>5.0.0-M1</jakarta.version>
 
@@ -259,6 +259,11 @@
             </resource>
         </resources>
         <plugins>
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>1.15.3</version>
+            </plugin>
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
