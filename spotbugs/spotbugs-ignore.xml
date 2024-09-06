@@ -7,6 +7,9 @@
         <Bug pattern="EI_EXPOSE_REP2"/>
     </Match>
     <Match>
+        <Bug pattern="CT_CONSTRUCTOR_THROW"/>
+    </Match>
+    <Match>
         <class>uk.gov.dwp.health.esao.verified.info.PropertyFileInfoProvider</class>
         <Bug pattern="DCN_NULLPOINTER_EXCEPTION"/>
     </Match>

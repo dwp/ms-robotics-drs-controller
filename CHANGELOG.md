@@ -1,9 +1,13 @@
+<a name="2-4-2"></a>
+# 2-4-2 (2024-08-30)
+
+*  chore: update dependencies ([e5dd8a96](https://gitlab.com/dwp/health/ns-esa/components/ms-robotics-drs-controller/-/commit/e5dd8a96))
+
 <a name="2-4-1"></a>
 # 2-4-1 (2024-03-01)
 
 *  chore: update node versions ([40d04a8](https://gitlab.com/dwp/health/ns-esa/components/ms-robotics-drs-controller/-/commit/40d04a8))
 *  chore: update dependencies ([678d6f6](https://gitlab.com/dwp/health/ns-esa/components/ms-robotics-drs-controller/-/commit/678d6f6))
-
 
 <a name="2-4-0"></a>
 # 2-4-0 (2023-07-27)
